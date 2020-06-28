@@ -1,4 +1,7 @@
 from django.db import models
+from django.utils import timezone
+import datetime
+import pytz
 
 
 class Passcard(models.Model):
@@ -23,5 +26,25 @@ class Visit(models.Model):
         return "{user} entered at {entered} {leaved}".format(
             user=self.passcard.owner_name,
             entered=self.entered_at,
-            leaved= "leaved at " + str(self.leaved_at) if self.leaved_at else "not leaved"
+            leaved= "leaved at " + str(self.leaved_at) if self.leaved_at else "not leaved",
         )
+
+    @property
+    def get_duration(self):
+        if self.leaved_at is None:
+            self.leaved_at = timezone.now()
+        # moscow_tz = pytz.timezone("Europe/Moscow")
+        # moscow_tz.localize(self.leaved_at)
+        delta = self.leaved_at - self.entered_at
+        return delta.seconds
+
+    @staticmethod
+    def format_duration(duration):
+        return datetime.timedelta(seconds=duration)
+
+    @staticmethod
+    def is_visit_long(visit, minutes=60):
+        if int(visit) / 60 > minutes:
+            return True
+        else:
+            return False
