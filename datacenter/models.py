@@ -33,8 +33,6 @@ class Visit(models.Model):
     def get_duration(self):
         if self.leaved_at is None:
             self.leaved_at = timezone.now()
-        # moscow_tz = pytz.timezone("Europe/Moscow")
-        # moscow_tz.localize(self.leaved_at)
         delta = self.leaved_at - self.entered_at
         return delta.seconds
 
@@ -44,7 +42,6 @@ class Visit(models.Model):
 
     @staticmethod
     def is_visit_long(visit, minutes=60):
-        if int(visit) / 60 > minutes:
-            return True
-        else:
-            return False
+        time_presence = int(visit) / 60
+        time_presence > minutes
+        return time_presence
