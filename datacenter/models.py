@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 import datetime
 import pytz
+import time
 
 
 class Passcard(models.Model):
@@ -29,19 +30,17 @@ class Visit(models.Model):
             leaved= "leaved at " + str(self.leaved_at) if self.leaved_at else "not leaved",
         )
 
-    @property
     def get_duration(self):
         if self.leaved_at is None:
             self.leaved_at = timezone.now()
         delta = self.leaved_at - self.entered_at
         return delta.seconds
 
-    @staticmethod
-    def format_duration(duration):
+    def format_duration(self):
+        duration = Visit.get_duration(self)
         return datetime.timedelta(seconds=duration)
 
-    @staticmethod
-    def is_visit_long(visit, minutes=60):
-        time_presence = int(visit) / 60
-        time_presence > minutes
-        return time_presence
+    def is_visit_long(self, minutes=60):
+        is_strange = Visit.get_duration(self)
+        time_presence = int(is_strange) / 60
+        return time_presence > minutes
