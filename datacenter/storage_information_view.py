@@ -10,7 +10,7 @@ def storage_information_view(request):
         who_entered = visit.passcard
         indoors = visit.entered_at
         outsid = visit.leaved_at
-        duration = visit.get_duration()
+        duration = visit.format_duration()
         is_strange = visit.is_visit_long()
 
         non_closed_visit = {

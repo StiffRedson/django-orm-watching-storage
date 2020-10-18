@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-import datetime
+from datetime import timedelta
 import pytz
 import time
 
@@ -34,13 +34,14 @@ class Visit(models.Model):
         if self.leaved_at is None:
             self.leaved_at = timezone.now()
         delta = self.leaved_at - self.entered_at
-        return delta.seconds
+        return delta.total_seconds()
 
     def format_duration(self):
-        duration = Visit.get_duration(self)
-        return datetime.timedelta(seconds=duration)
+        duration = self.get_duration()
+        format_duration = "{}".format(str(timedelta(seconds=duration)))
+        return format_duration.split(".")[0]
 
     def is_visit_long(self, minutes=60):
-        is_strange = Visit.get_duration(self)
+        is_strange = self.get_duration()
         time_presence = int(is_strange) / 60
         return time_presence > minutes

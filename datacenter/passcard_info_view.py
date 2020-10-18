@@ -8,7 +8,7 @@ def passcard_info_view(request, passcode):
     this_passcard_visits = []
     for history in passcard:
         entered_at = history.entered_at
-        duration = history.get_duration()
+        duration = history.format_duration()
         is_strange = history.is_visit_long()
 
         this_passcard_visit =   {
