@@ -10,19 +10,19 @@ def storage_information_view(request):
         who_entered = visit.passcard
         indoors = visit.entered_at
         outsid = visit.leaved_at
-        duration = visit.format_duration()
-        is_strange = visit.is_visit_long()
+        time_in_storage = visit.format_duration()
+        time_long = visit.is_visit_long()
 
         non_closed_visit = {
                                 "who_entered": who_entered,
                                 "entered_at": indoors,
-                                "duration": duration,
-                                "is_strange": is_strange
+                                "duration": time_in_storage,
+                                "is_strange": time_long
                             }
 
         non_closed_visits.append(non_closed_visit)
 
     context = {
-        "non_closed_visits": non_closed_visits,  # не закрытые посещения
+        "non_closed_visits": non_closed_visits,
     }
     return render(request, 'storage_information.html', context)

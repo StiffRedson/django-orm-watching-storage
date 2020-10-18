@@ -37,11 +37,10 @@ class Visit(models.Model):
         return delta.total_seconds()
 
     def format_duration(self):
-        duration = self.get_duration()
-        format_duration = "{}".format(str(timedelta(seconds=duration)))
-        return format_duration.split(".")[0]
+        time_in_storage = self.get_duration()
+        time_format = "{}".format(str(timedelta(seconds=time_in_storage)))
+        return time_format.split(".")[0]
 
     def is_visit_long(self, minutes=60):
-        is_strange = self.get_duration()
-        time_presence = int(is_strange) / 60
+        time_presence = int(self.get_duration()) / 60
         return time_presence > minutes
